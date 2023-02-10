@@ -3,8 +3,8 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { cereals } from '../../constants/cereals'
 
 export default function handler(
-  req: NextApiRequest,
+  _req: NextApiRequest,
   res: NextApiResponse
-) {
+): void {
   res.status(200).json(cereals)
 }
