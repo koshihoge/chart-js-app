@@ -1,0 +1,66 @@
+env:
+  browser: true
+  es2021: true
+  node: true
+extends:
+  - eslint:recommended
+  - plugin:react/recommended
+  - plugin:@typescript-eslint/recommended
+  - next/core-web-vitals
+  - prettier
+overrides: []
+parser: '@typescript-eslint/parser'
+parserOptions:
+  ecmaVersion: latest
+  sourceType: module
+plugins:
+  - react
+  - '@typescript-eslint'
+rules:
+  # 関数の複雑さを 10 以下にする
+  complexity: ['error', 10]
+  # React のプロパティの型チェックを省略する (TypeScript でチェックされるため)
+  react/prop-types: off
+  # インターフェースの先頭文字を "I" にする
+  # 明確な命名規則はないのでOFFにする
+  #'@typescript-eslint/naming-convention':
+  #  - error
+  #  - selector: interface
+  #    format:
+  #      - PascalCase
+  #    custom:
+  #      regex: ^I[A-Z]
+  #      match: false
+  # 何も指定しないと返り値が any になってしまうので何か明示
+  # Promiseをいちいち変数で受けないといけないは面倒なのでOFFにする
+  #'@typescript-eslint/no-floating-promises':
+  #  - error
+  # 使ってない変数があるとエラー(但し頭に_をつければOK)
+  '@typescript-eslint/no-unused-vars':
+    - error
+    - argsIgnorePattern: '^_'
+  # no null assertionを有効にしない
+  '@typescript-eslint/no-non-null-assertion':
+    - error
+  # anyを許さない
+  '@typescript-eslint/no-explicit-any':
+    - error
+  # 関数の戻り値の明示を強要する
+  '@typescript-eslint/explicit-function-return-type':
+    - error
+  # 型付けを強要する
+  '@typescript-eslint/typedef':
+    - error
+  no-var:
+    - error
+  # 配列などの最後のコンマは複数行の場合のみ許可 NG: [x, y,]
+  comma-dangle:
+    - error
+    - only-multiline
+  # コンマで改行する場合、行の最後に入れる
+  comma-style:
+    - error
+    - last
+  # prettier のチェックでErrorとするための設定。
+  prettier/prettier:
+    - error

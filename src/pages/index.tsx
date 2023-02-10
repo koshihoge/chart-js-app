@@ -1,16 +1,16 @@
-import Head from 'next/head';
-import { Inter } from '@next/font/google';
-import React from 'react';
-import Chart from 'chart.js/auto';
+import Head from 'next/head'
+import { Inter } from '@next/font/google'
+import React from 'react'
+import Chart from 'chart.js/auto'
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'] })
 
 export default function Home(props: any) {
   React.useEffect(() => {
-    let myChart: any = null;
+    let myChart: any = null
     const cereals = props.cereals.map((cereal: any) => {
-      return { x: cereal.calories, y: cereal.carbo };
-    });
+      return { x: cereal.calories, y: cereal.carbo }
+    })
     const config: any = {
       type: 'scatter',
       data: {
@@ -57,15 +57,15 @@ export default function Home(props: any) {
           },
         },
       },
-    };
+    }
     myChart = new Chart(
       document.getElementById('myChart') as HTMLCanvasElement,
       config
-    );
+    )
     return () => {
-      myChart.destroy();
-    };
-  }, []);
+      myChart.destroy()
+    }
+  }, [])
   return (
     <>
       <Head>
@@ -82,15 +82,17 @@ export default function Home(props: any) {
             <canvas id="myChart" width="300" height="300"></canvas>
           </div>
         </section>
+        <a href="/">test</a>
+        <img src="/" />
       </main>
     </>
-  );
+  )
 }
 
 export async function getServerSideProps(context: any) {
-  const response = await fetch('http://localhost:3000/api/cereals');
-  const cereals = await response.json();
+  const response = await fetch('http://localhost:3000/api/cereals')
+  const cereals = await response.json()
   return {
     props: { cereals },
-  };
+  }
 }
