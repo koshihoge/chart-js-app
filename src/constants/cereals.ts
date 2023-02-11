@@ -1,23 +1,29 @@
-export type ParameterName =
+export type CerealParameterName =
   | 'name'
-  | 'mfr'
-  | 'type'
-  | 'calories'
-  | 'protein'
-  | 'fat'
-  | 'sodium'
-  | 'fiber'
-  | 'carbo'
-  | 'sugars'
-  | 'potass'
-  | 'vitamins'
-  | 'shelf'
-  | 'weight'
-  | 'cups'
-  | 'rating'
+  | CerealTypeParameterName
+  | CerealValueParameterName
+export type CerealTypeParameterName = 'mfr' | 'type'
+
+export const cerealValueParameterNames = [
+  'calories',
+  'protein',
+  'fat',
+  'sodium',
+  'fiber',
+  'carbo',
+  'sugars',
+  'potass',
+  'vitamins',
+  'shelf',
+  'weight',
+  'cups',
+  'rating',
+] as const
+export type CerealValueParameterName =
+  (typeof cerealValueParameterNames)[number]
 
 export type Cereal = {
-  [name in ParameterName]: string
+  [name in CerealParameterName]: string
 }
 
 export const cereals: Cereal[] = [

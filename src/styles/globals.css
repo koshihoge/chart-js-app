@@ -1,1 +1,9 @@
 /* お好みでどうぞ */
+span.axisCaption {
+  margin-right: 5px;
+}
+
+span.axisSpacing {
+  margin-left: 5px;
+  margin-right: 5px;
+}

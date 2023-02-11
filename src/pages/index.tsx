@@ -1,8 +1,12 @@
 import Head from 'next/head'
 import { Inter } from '@next/font/google'
-import React from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import { Scatter } from 'react-chartjs-2'
-import { Cereal } from '@/constants/cereals'
+import {
+  Cereal,
+  CerealValueParameterName,
+  cerealValueParameterNames,
+} from '@/constants/cereals'
 import { GetServerSideProps } from 'next'
 import { LayoutPosition } from 'chart.js'
 import 'chart.js/auto'
@@ -15,8 +19,13 @@ type Props = {
 }
 
 const Home = (props: Props): JSX.Element => {
+  const [xCerealParameter, setXCerealParameter] =
+    useState<CerealValueParameterName>('calories')
+  const [yCerealParameter, setYCerealParameter] =
+    useState<CerealValueParameterName>('carbo')
+
   const cereals = props.cereals.map((cereal: Cereal) => {
-    return { x: cereal.calories, y: cereal.carbo }
+    return { x: cereal[xCerealParameter], y: cereal[yCerealParameter] }
   })
 
   const data = {
@@ -30,7 +39,6 @@ const Home = (props: Props): JSX.Element => {
   }
 
   const position: LayoutPosition = 'bottom'
-
   const options = {
     plugins: {
       legend: {
@@ -42,7 +50,7 @@ const Home = (props: Props): JSX.Element => {
         display: true,
         title: {
           display: true,
-          text: 'Calories',
+          text: xCerealParameter,
           font: {
             size: 20,
             weight: 'bold',
@@ -55,7 +63,7 @@ const Home = (props: Props): JSX.Element => {
         display: true,
         title: {
           display: true,
-          text: 'Carbo',
+          text: yCerealParameter,
           font: {
             size: 20,
             weight: 'bold',
@@ -66,6 +74,22 @@ const Home = (props: Props): JSX.Element => {
       },
     },
   }
+
+  const changeXCerealParameter = (e: ChangeEvent<HTMLSelectElement>): void => {
+    setXCerealParameter(e.target.value as CerealValueParameterName)
+  }
+
+  const changeYCerealParameter = (e: ChangeEvent<HTMLSelectElement>): void => {
+    setYCerealParameter(e.target.value as CerealValueParameterName)
+  }
+
+  const selectCerealValueOptions = cerealValueParameterNames.map(
+    (element, i) => (
+      <option key={i} value={element}>
+        {element}
+      </option>
+    )
+  )
 
   return (
     <>
@@ -81,6 +105,17 @@ const Home = (props: Props): JSX.Element => {
           <p>シリアルのデータ</p>
           <div style={{ width: '400pt' }}>
             <Scatter data={data} options={options} width={300} height={300} />
+          </div>
+          <div>
+            <span className="axisCaption">x軸</span>
+            <select value={xCerealParameter} onChange={changeXCerealParameter}>
+              {selectCerealValueOptions}
+            </select>
+            <span className="axisSpacing"></span>
+            <span className="axisCaption">y軸</span>
+            <select value={yCerealParameter} onChange={changeYCerealParameter}>
+              {selectCerealValueOptions}
+            </select>
           </div>
         </section>
       </main>
