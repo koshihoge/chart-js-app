@@ -49,7 +49,7 @@ const Home = (props: Props): JSX.Element => {
   const data = {
     datasets: [
       {
-        label: cereals.length + ' Cereals',
+        label: '80 Cereals' + ` (${cereals.length} unique values)`,
         backgroundColor: 'rgb(255, 99, 132)',
         data: cereals,
       },
