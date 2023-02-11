@@ -4,6 +4,7 @@ import React, { ChangeEvent, useState } from 'react'
 import { Scatter } from 'react-chartjs-2'
 import {
   Cereal,
+  CerealTypeParameterName,
   CerealValueParameterName,
   cerealValueParameterNames,
 } from '@/constants/cereals'
@@ -24,9 +25,26 @@ const Home = (props: Props): JSX.Element => {
   const [yCerealParameter, setYCerealParameter] =
     useState<CerealValueParameterName>('carbo')
 
-  const cereals = props.cereals.map((cereal: Cereal) => {
-    return { x: cereal[xCerealParameter], y: cereal[yCerealParameter] }
-  })
+  const [mfrCerealParameter, setMfrCerealParameter] = useState<
+    CerealTypeParameterName | ''
+  >('')
+  const [typeCerealParameter, setTypeCerealParameter] = useState<
+    CerealTypeParameterName | ''
+  >('')
+
+  const mfrs = new Set(props.cereals.map((element, _) => element.mfr))
+  const types = new Set(props.cereals.map((element, _) => element.type))
+
+  const cereals = props.cereals
+    .filter((cereal: Cereal) => {
+      return (
+        (mfrCerealParameter === '' || mfrCerealParameter === cereal.mfr) &&
+        (typeCerealParameter === '' || typeCerealParameter === cereal.type)
+      )
+    })
+    .map((cereal: Cereal) => {
+      return { x: cereal[xCerealParameter], y: cereal[yCerealParameter] }
+    })
 
   const data = {
     datasets: [
@@ -83,6 +101,18 @@ const Home = (props: Props): JSX.Element => {
     setYCerealParameter(e.target.value as CerealValueParameterName)
   }
 
+  const changeMfrCerealParameter = (
+    e: ChangeEvent<HTMLSelectElement>
+  ): void => {
+    setMfrCerealParameter(e.target.value as CerealTypeParameterName | '')
+  }
+
+  const changeTypeCerealParameter = (
+    e: ChangeEvent<HTMLSelectElement>
+  ): void => {
+    setTypeCerealParameter(e.target.value as CerealTypeParameterName | '')
+  }
+
   const selectCerealValueOptions = cerealValueParameterNames.map(
     (element, i) => (
       <option key={i} value={element}>
@@ -90,6 +120,19 @@ const Home = (props: Props): JSX.Element => {
       </option>
     )
   )
+
+  const refineCerealValueOptions = (values: Set<string>): JSX.Element => {
+    return (
+      <>
+        <option value={''}></option>
+        {Array.from(values).map((element, i) => (
+          <option key={i} value={element}>
+            {element}
+          </option>
+        ))}
+      </>
+    )
+  }
 
   return (
     <>
@@ -107,14 +150,29 @@ const Home = (props: Props): JSX.Element => {
             <Scatter data={data} options={options} width={300} height={300} />
           </div>
           <div>
-            <span className="axisCaption">x軸</span>
+            <span className="selectboxCaption">x軸</span>
             <select value={xCerealParameter} onChange={changeXCerealParameter}>
               {selectCerealValueOptions}
             </select>
-            <span className="axisSpacing"></span>
-            <span className="axisCaption">y軸</span>
+            <span className="captionSpacing"></span>
+            <span className="selectboxCaption">y軸</span>
             <select value={yCerealParameter} onChange={changeYCerealParameter}>
               {selectCerealValueOptions}
+            </select>
+          </div>
+          <div>
+            <span className="selectboxCaption">mfr</span>
+            <select
+              value={mfrCerealParameter}
+              onChange={changeMfrCerealParameter}>
+              {refineCerealValueOptions(mfrs)}
+            </select>
+            <span className="captionSpacing"></span>
+            <span className="selectboxCaption">type</span>
+            <select
+              value={typeCerealParameter}
+              onChange={changeTypeCerealParameter}>
+              {refineCerealValueOptions(types)}
             </select>
           </div>
         </section>
