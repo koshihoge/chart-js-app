@@ -15,4 +15,8 @@ CREATE TABLE cereals (
     weight float,
     cups float,
     rating float
-)
+);
+
+COPY cereals FROM '/workspace/db/cereals.csv' DELIMITER ',' CSV HEADER;
+
+ALTER TABLE cereals ADD id serial PRIMARY KEY;

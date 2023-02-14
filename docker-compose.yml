@@ -6,7 +6,9 @@ volumes:
 
 services:
   app:
-    image: node:16.13.2
+    build:
+      context: ./
+      dockerfile: Dockerfile
     ports:
       - 3000:3000
     volumes:
@@ -14,11 +16,13 @@ services:
       - node_modules:/workspace/node_modules
     working_dir: /workspace
     tty: true
+    depends_on:
+      - db
   db:
-    image: postgres:14
+    build: ./db
     restart: always
     environment:
-      POSTGRES_DB: ${POSTGRES_DB} 
+      POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
