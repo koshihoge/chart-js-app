@@ -1,10 +1,14 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { cereals } from '../../constants/cereals'
+import prisma from 'lib/prisma'
 
-export default function handler(
+const handler = async (
   _req: NextApiRequest,
   res: NextApiResponse
-): void {
+): Promise<void> => {
+  console.log(process.env.DATABASE_URL)
+  const cereals = await prisma.cereals.findMany()
   res.status(200).json(cereals)
 }
+
+export default handler

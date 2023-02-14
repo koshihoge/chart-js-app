@@ -1,0 +1,31 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model cereals {
+  name String
+  mfr String
+  type String
+  calories Float
+  protein Float
+  fat Float
+  sodium Float
+  fiber Float
+  carbo Float
+  sugars Float
+  potass Float
+  vitamins Float
+  shelf Float
+  weight Float
+  cups Float
+  rating Float
+  id Int @id @default(autoincrement())
+}
