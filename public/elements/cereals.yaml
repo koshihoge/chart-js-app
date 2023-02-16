@@ -1,0 +1,148 @@
+openapi: 3.1.0
+x-stoplight:
+  id: 9bbcxebuv0qs4
+info:
+  title: cereals
+  version: '1.0'
+  summary: Cerealデータの授受
+  description: |-
+    Getメソッドでデータベースに登録済みのCerealデータをすべて取得します
+    Postメソッドでデータベースに登録されているCerealデータを編集します
+servers:
+  - description: ''
+    url: 'http://localhost:3000'
+paths:
+  /api/cereals:
+    get:
+      summary: Cereal データの取得
+      tags: []
+      operationId: get-cereals
+      description: 80 Cereals の全データを返す
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/cereals'
+    post:
+      summary: Cereal データの編集
+      operationId: post-cereals
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cereals'
+              examples: {}
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/cereals'
+              examples:
+                Example 1:
+                  value:
+                    id: 1
+          headers: {}
+        '400':
+          description: Missing Required Information
+        '404':
+          description: cereal Not Found
+      description: |-
+        特定のcerealデータを編集する
+        新規追加はしない
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cereals'
+            examples:
+              Example 1:
+                value:
+                  id: 1
+                  name: 100% Bran
+                  mfr: 'N'
+                  type: C
+                  calories: 70
+                  protein: 4
+                  fat: 1
+                  sodium: 130
+                  fiber: 10
+                  carbo: 5
+                  sugars: 6
+                  potass: 280
+                  vitamins: 25
+                  shelf: 3
+                  weight: 1
+                  cups: 0.33
+                  rating: 68.402973
+        description: Post the necessary fields for the API to update a cereal.
+      parameters: []
+    parameters: []
+components:
+  schemas:
+    cereals:
+      title: cereals
+      x-stoplight:
+        id: sfswvc23w9j1n
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+          description: Unique identifier for the cereal.
+          readOnly: true
+        name:
+          type: string
+        mfr:
+          type: string
+        type:
+          type: string
+        calories:
+          type: number
+        protein:
+          type: number
+        fat:
+          type: number
+        sodium:
+          type: number
+        fiber:
+          type: number
+        carbo:
+          type: number
+        sugars:
+          type: number
+        potass:
+          type: number
+        vitamins:
+          type: number
+        shelf:
+          type: number
+        weight:
+          type: number
+        cups:
+          type: number
+        rating:
+          type: number
+      required:
+        - id
+      examples:
+        - id: 1
+          name: 100% Bran
+          mfr: 'N'
+          type: C
+          calories: 70
+          protein: 4
+          fat: 1
+          sodium: 130
+          fiber: 10
+          carbo: 5
+          sugars: 6
+          potass: 280
+          vitamins: 25
+          shelf: 3
+          weight: 1
+          cups: 0.33
+          rating: 68.402973
